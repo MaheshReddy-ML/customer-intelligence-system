@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "customer-intelligence-system"
+version = "0.1.0"
+description = "Customer segmentation and recommendation system using clustering, embeddings, and neural models."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    { name = "Mahesh Reddy" }
+]
+dependencies = [
+    "joblib>=1.4",
+    "matplotlib>=3.8",
+    "numpy>=1.26",
+    "pandas>=2.2",
+    "pyyaml>=6.0",
+    "scikit-learn>=1.4",
+    "seaborn>=0.13",
+    "tensorflow>=2.16",
+    "ucimlrepo>=0.0.7"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.5"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+namespaces = true
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

@@ -1,0 +1,21 @@
+project:
+  name: customer-intelligence-system
+  random_state: 42
+
+data:
+  dataset_id: 352
+  raw_path: data/raw/online_retail.csv
+
+clustering:
+  n_clusters: 4
+  max_k: 10
+
+training:
+  test_size: 0.2
+  epochs: 20
+  batch_size: 64
+
+outputs:
+  models_dir: outputs/models
+  metrics_dir: outputs/metrics
+  plots_dir: outputs/plots
