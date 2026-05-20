@@ -5,7 +5,9 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.ipynb_checkpoints/
 .coverage
+.coverage.*
 htmlcov/
 
 # Virtual environments
@@ -17,11 +19,26 @@ env/
 build/
 dist/
 *.egg-info/
+.eggs/
+site/
+wheelhouse/
+
+# Frontend dependencies and build caches
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.vite/
+.parcel-cache/
+.next/
+coverage/
 
 # Environment and local settings
 .env
 .env.*
 !.env.example
+.python-version
 
 # Data and generated artifacts
 data/raw/*
@@ -34,6 +51,14 @@ outputs/embeddings/*
 
 # Keep directory placeholders if they are added later
 !.gitkeep
+
+# Local runtime files
+*.log
+*.pid
+*.sqlite
+*.sqlite3
+tmp/
+temp/
 
 # IDE and OS files
 .DS_Store

@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Customer Intelligence System</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <canvas id="signal-canvas" aria-hidden="true"></canvas>
+
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand-lockup" href="/">
+          <span class="brand-mark">CI</span>
+          <span>
+            <strong>Customer Intelligence</strong>
+            <small>Retail segmentation lab</small>
+          </span>
+        </a>
+
+        <nav class="view-tabs" aria-label="Dashboard views">
+          <a href="#predictor">Predictor</a>
+          <a href="#segments">Segments</a>
+          <a href="#model">Model</a>
+        </nav>
+
+        <div class="system-pill" id="health-pill">
+          <span></span>
+          <strong>Connecting</strong>
+        </div>
+      </header>
+
+      <section class="hero-panel">
+        <div class="hero-copy">
+          <p class="eyebrow">FastAPI live model</p>
+          <h1>Customer segmentation that feels boardroom-ready and analyst-friendly.</h1>
+          <p class="hero-summary">
+            Neural segment prediction, K-Means evaluation, cluster recommendations, and embedding visuals in one connected workspace.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-link" href="#predictor">Open Predictor</a>
+            <a class="secondary-link" href="/docs" target="_blank" rel="noreferrer">API Docs</a>
+          </div>
+        </div>
+
+        <div class="intelligence-board" aria-label="Customer intelligence summary">
+          <div class="board-header">
+            <span>Live Intelligence</span>
+            <strong id="board-segment-count">--</strong>
+          </div>
+          <div class="board-grid">
+            <div class="board-cell strong">
+              <span>Best K</span>
+              <strong id="best-k">--</strong>
+            </div>
+            <div class="board-cell">
+              <span>Silhouette</span>
+              <strong id="best-score">--</strong>
+            </div>
+            <div class="board-cell">
+              <span>Artifacts</span>
+              <strong id="artifact-state">--</strong>
+            </div>
+            <div class="board-cell strong">
+              <span>Status</span>
+              <strong id="board-status">Syncing</strong>
+            </div>
+          </div>
+          <div class="pulse-lanes">
+            <i></i><i></i><i></i><i></i>
+          </div>
+        </div>
+      </section>
+
+      <section class="kpi-rail" id="kpi-rail" aria-label="Segment metrics">
+        <article class="metric-card loading"></article>
+        <article class="metric-card loading"></article>
+        <article class="metric-card loading"></article>
+      </section>
+
+      <section class="workspace-grid" id="predictor">
+        <article class="panel predictor-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Scenario Builder</p>
+              <h2>Customer profile</h2>
+            </div>
+            <div class="preset-bar" id="preset-bar">
+              <button type="button" data-segment="1">Premium</button>
+              <button type="button" data-segment="0">Regular</button>
+              <button type="button" data-segment="3">Dormant</button>
+            </div>
+          </div>
+
+          <form id="predict-form" class="feature-form">
+            <label class="feature-control">
+              <span>
+                <strong>Recency</strong>
+                <small>days since last purchase</small>
+              </span>
+              <input type="range" name="recency" min="0" max="365" step="1" value="34" />
+              <input type="number" name="recency_number" min="0" max="500" step="1" value="34" />
+            </label>
+            <label class="feature-control">
+              <span>
+                <strong>Frequency</strong>
+                <small>log transaction count</small>
+              </span>
+              <input type="range" name="frequency" min="0" max="7" step="0.1" value="4.9" />
+              <input type="number" name="frequency_number" min="0" max="10" step="0.1" value="4.9" />
+            </label>
+            <label class="feature-control">
+              <span>
+                <strong>Monetary</strong>
+                <small>log customer value</small>
+              </span>
+              <input type="range" name="monetary_value" min="0" max="10" step="0.1" value="7.9" />
+              <input type="number" name="monetary_value_number" min="0" max="15" step="0.1" value="7.9" />
+            </label>
+            <label class="feature-control">
+              <span>
+                <strong>Quantity</strong>
+                <small>log item volume</small>
+              </span>
+              <input type="range" name="total_quantity" min="0" max="10" step="0.1" value="7.4" />
+              <input type="number" name="total_quantity_number" min="0" max="15" step="0.1" value="7.4" />
+            </label>
+            <label class="feature-control">
+              <span>
+                <strong>Avg price</strong>
+                <small>mean unit price</small>
+              </span>
+              <input type="range" name="avg_unit_price" min="0" max="120" step="0.1" value="3.5" />
+              <input type="number" name="avg_unit_price_number" min="0" max="3000" step="0.1" value="3.5" />
+            </label>
+
+            <div class="form-footer">
+              <button class="primary-button" type="submit">
+                <span>Run Model</span>
+                <b>Enter</b>
+              </button>
+              <span class="save-state" id="save-state">Ready</span>
+            </div>
+          </form>
+        </article>
+
+        <article class="panel result-panel">
+          <div class="result-header">
+            <div>
+              <p class="eyebrow" id="model-status">Awaiting model</p>
+              <h2 id="cluster-name">Ready to classify</h2>
+            </div>
+            <div class="cluster-chip">
+              <span>Cluster</span>
+              <strong id="cluster-id">--</strong>
+            </div>
+          </div>
+
+          <div class="confidence-stage">
+            <canvas id="confidence-canvas" aria-label="Prediction confidence"></canvas>
+            <div class="confidence-center">
+              <span id="confidence-label">Confidence</span>
+              <strong id="confidence-score">--</strong>
+            </div>
+          </div>
+
+          <p class="result-summary" id="summary">
+            Run the model to generate a segment summary and business action.
+          </p>
+
+          <div class="action-strip">
+            <span>Recommended action</span>
+            <strong id="business-action">Waiting for prediction.</strong>
+          </div>
+
+          <div class="probability-bars" id="probability-bars"></div>
+        </article>
+      </section>
+
+      <section class="insight-grid" id="segments">
+        <article class="panel segment-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Segment Landscape</p>
+              <h2>Customer groups</h2>
+            </div>
+          </div>
+          <div class="segment-list" id="segment-list"></div>
+        </article>
+
+        <article class="panel model-panel" id="model">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Model Evaluation</p>
+              <h2>K-Means performance</h2>
+            </div>
+            <div class="chart-legend">
+              <span class="legend-bar">Inertia</span>
+              <span class="legend-line">Silhouette</span>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="metrics-chart"></canvas>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel asset-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Embedding View</p>
+            <h2>Learned customer space</h2>
+          </div>
+        </div>
+        <div class="embedding-frame">
+          <img src="/api/plots/embedding_tsne.png" alt="t-SNE visualization of learned customer embeddings" />
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

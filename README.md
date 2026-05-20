@@ -9,6 +9,8 @@
 
 Customer Intelligence System is a machine learning project that transforms raw retail transactions into meaningful customer segments, learned embeddings, evaluation metrics, visualizations, and business recommendations. It combines traditional clustering, supervised baselines, neural representation learning, and rule-based recommendation outputs in one clean pipeline.
 
+The project now includes a FastAPI-powered web experience with an animated executive dashboard, live customer segment prediction, model evaluation visuals, and recommendation guidance served from the same backend.
+
 ## What It Does
 
 - Downloads or loads the Online Retail dataset from the UCI Machine Learning Repository.
@@ -28,6 +30,8 @@ Customer Intelligence System is a machine learning project that transforms raw r
 | Data processing | Pandas, NumPy |
 | Machine learning | scikit-learn |
 | Deep learning | TensorFlow, Keras |
+| API | FastAPI, Uvicorn |
+| Frontend | HTML, CSS, JavaScript |
 | Visualization | Matplotlib, Seaborn |
 | Data source | UCI ML Repository |
 | Packaging | pyproject.toml, setuptools |
@@ -46,6 +50,10 @@ customer-intelligence-system/
 │   ├── metrics/
 │   ├── models/
 │   └── plots/
+├── frontend/
+│   ├── index.html
+│   ├── styles.css
+│   └── app.js
 ├── src/
 │   ├── clustering/
 │   ├── data/
@@ -113,6 +121,46 @@ Prediction returns a structured output with:
 - Segment summary
 - Recommended business action
 - Model probability scores
+
+## Run The Web App
+
+Start the FastAPI server from the project root:
+
+```bash
+uvicorn src.api:app --reload
+```
+
+Open the dashboard at:
+
+```text
+http://127.0.0.1:8000
+```
+
+Useful API routes:
+
+| Route | Purpose |
+| --- | --- |
+| `GET /api/health` | Service and artifact status |
+| `GET /api/segments` | Cluster summaries with labels and recommendations |
+| `GET /api/metrics` | K-Means inertia and silhouette metrics |
+| `POST /api/predict` | Live customer segment prediction |
+| `GET /docs` | Interactive OpenAPI documentation |
+
+Example prediction request:
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/predict \
+  -H "Content-Type: application/json" \
+  -d '{
+    "recency": 34.6,
+    "frequency": 4.9,
+    "monetary_value": 7.8,
+    "total_quantity": 7.3,
+    "avg_unit_price": 3.5
+  }'
+```
+
+If trained TensorFlow artifacts are unavailable, the API returns a transparent heuristic fallback so the frontend remains usable while models are being regenerated.
 
 ## Generated Outputs
 
